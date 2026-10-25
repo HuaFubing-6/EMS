@@ -1,0 +1,55 @@
+{% extends "app01/layout.html" %}
+{% load static %}
+
+{% block title %}用户管理{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 10px;">
+    <a class="btn btn-success" href="/user/add/">
+        <span class="glyphicon glyphicon-plus-sign"></span> 新建用户
+    </a>
+    <a class="btn btn-primary" href="/user/add/modelform/">
+        <span class="glyphicon glyphicon-plus-sign"></span> 新建用户ModelForm
+    </a>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-th-list"></span> 用户列表
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>姓名</th>
+            <th>密码</th>
+            <th>年龄</th>
+            <th>账户</th>
+            <th>入职时间</th>
+            <th>性别</th>
+            <th>部门</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in queryset %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.password }}</td>
+            <td>{{ item.age }}</td>
+            <td>{{ item.account }}</td>
+            <td>{{ item.create_time|date:"Y-m-d H:i" }}</td>
+            <td>{% if item.gender == 1 %}男{% else %}女{% endif %}</td>
+            <td>{{ item.depart.title }}</td>
+            <td>
+                <a class="btn btn-primary btn-xs" href="/user/{{ item.id }}/edit/">编辑</a>
+                <a class="btn btn-danger btn-xs" href="/user/{{ item.id }}/delete/"
+                   onclick="return confirm('确认删除该用户？');">删除</a>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

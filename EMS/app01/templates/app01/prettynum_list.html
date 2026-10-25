@@ -1,0 +1,68 @@
+{% extends "app01/layout.html" %}
+{% load static %}
+
+{% block title %}靓号列表{% endblock %}
+
+{% block content %}
+<div style="margin-bottom: 10px">
+    <a class="btn btn-success" href="/pretty/add/">
+        <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+        新增靓号
+    </a>
+</div>
+
+<div class="panel panel-default">
+    <div class="panel-heading" style="display: flex; justify-content: space-between; align-items: center;">
+        <span>
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+            靓号列表
+        </span>
+        <!-- 搜索框（右上角）：9.5 搜索手机号 -->
+        <form method="get" style="margin: 0;">
+            <div style="display: flex;">
+                <input type="text" name="q" value="{{ search_data }}" placeholder="Search for..."
+                       class="form-control" style="width: 200px;">
+                <button type="submit" class="btn btn-primary" style="margin-left: 5px;">
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>号码</th>
+            <th>价格</th>
+            <th>级别</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for obj in queryset %}
+        <tr>
+            <th>{{ obj.id }}</th>
+            <td>{{ obj.mobile }}</td>
+            <td>{{ obj.price }}</td>
+            <td>{{ obj.get_level_display }}</td>
+            <td>{{ obj.get_status_display }}</td>
+            <td>
+                <a class="btn btn-primary btn-xs" href="/pretty/{{ obj.id }}/edit/">编辑</a>
+                <a class="btn btn-danger btn-xs" href="/pretty/{{ obj.id }}/delete/"
+                   onclick="return confirm('确认删除该靓号？');">删除</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="6" style="text-align: center;">暂无数据</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <!-- 9.6 分页组件 -->
+    <div style="margin-top: 10px;">
+        {{ page_string }}
+    </div>
+</div>
+{% endblock %}
